@@ -37,7 +37,7 @@
         </div>
 
         <div style="margin-bottom: 30px; display: flex; align-items: center; gap: 10px;">
-            <input type="checkbox" name="is_active" id="is_active" value="1" {{ old('is_active', $package->is_active ?? true) ? 'checked' : '' }} style="width: 18px; height: 18px;">
+            <input type="checkbox" name="is_active" id="is_active" value="1" {{ old('is_active', $package->is_active ?? true) ? 'checked' : '' }} style="width: 18px; height: 18px; accent-color: var(--brand-primary);">
             <label for="is_active" style="font-weight: 600; cursor: pointer;">Tersedia (Aktif)</label>
         </div>
     </div>

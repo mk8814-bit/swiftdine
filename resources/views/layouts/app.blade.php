@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,15 +8,37 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700;800;900&display=swap" rel="stylesheet">
-    <style>`r`n        .social-icons .fb { color: #1877F2 !important; }`r`n        .social-icons .tw { color: #1DA1F2 !important; }`r`n        .social-icons .ig { color: #E1306C !important; }`r`n        .social-icons .yt { color: #FF0000 !important; }
+    <style>
+        `r`n .social-icons .fb {
+            color: #1877F2 !important;
+        }
+
+        `r`n .social-icons .tw {
+            color: #1DA1F2 !important;
+        }
+
+        `r`n .social-icons .ig {
+            color: #E1306C !important;
+        }
+
+        `r`n .social-icons .yt {
+            color: #FF0000 !important;
+        }
+
         :root {
             /* Palette: Putih, Coklat Muda, Cream */
-            --brand-primary: #C19A6B; /* Coklat muda */
-            --brand-cream: #FDFBF7; /* Cream lembut */
-            --brand-dark: #4A3B32; /* Coklat gelap untuk teks */
-            --brand-light: #FFFFFF; /* Putih */
-            --brand-accent: #A67B5B; /* Coklat muda sedikit gelap untuk hover */
-            --brand-banner: #D4A373; /* Coklat muda banner */
+            --brand-primary: #C19A6B;
+            /* Coklat muda */
+            --brand-cream: #FDFBF7;
+            /* Cream lembut */
+            --brand-dark: #4A3B32;
+            /* Coklat gelap untuk teks */
+            --brand-light: #FFFFFF;
+            /* Putih */
+            --brand-accent: #A67B5B;
+            /* Coklat muda sedikit gelap untuk hover */
+            --brand-banner: #D4A373;
+            /* Coklat muda banner */
         }
 
         * {
@@ -41,7 +64,7 @@
             position: relative;
             z-index: 100;
         }
-        
+
         .top-banner strong {
             font-weight: 800;
             color: var(--brand-dark);
@@ -72,7 +95,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
             position: sticky;
             top: 0;
             z-index: 99;
@@ -90,7 +113,7 @@
             letter-spacing: -1px;
             transition: transform 0.3s ease;
         }
-        
+
         .logo h2:hover {
             transform: scale(1.05);
         }
@@ -150,6 +173,7 @@
             position: relative;
             display: inline-block;
         }
+
         .dropdown-content {
             display: none;
             position: absolute;
@@ -158,23 +182,33 @@
             transform: translateX(-50%);
             background-color: var(--brand-light);
             min-width: 160px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
             z-index: 1;
             border-radius: 8px;
             padding: 10px 0;
             opacity: 0;
             transition: opacity 0.3s ease;
         }
+
         .dropdown:hover .dropdown-content {
             display: flex;
             flex-direction: column;
             opacity: 1;
             animation: fadeIn 0.3s forwards;
         }
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translate(-50%, 10px); }
-            to { opacity: 1; transform: translate(-50%, 0); }
+            from {
+                opacity: 0;
+                transform: translate(-50%, 10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
         }
+
         .dropdown-content a {
             color: var(--brand-dark);
             padding: 10px 20px;
@@ -183,9 +217,11 @@
             font-size: 0.95rem;
             text-align: center;
         }
+
         .dropdown-content a::after {
             display: none;
         }
+
         .dropdown-content a:hover {
             background-color: var(--brand-cream);
         }
@@ -219,7 +255,7 @@
             position: absolute;
             width: 1000px;
             height: 1000px;
-            background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 60%);
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0) 60%);
             top: 50%;
             left: 30%;
             transform: translate(-50%, -50%);
@@ -239,7 +275,7 @@
             padding: 10px 30px;
             border-radius: 50px;
             display: inline-block;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
             color: var(--brand-primary);
             font-weight: 800;
             font-size: 1.2rem;
@@ -304,7 +340,7 @@
             transform: rotate(2deg);
             transition: transform 0.5s ease;
         }
-        
+
         .phone-mockup:hover {
             transform: rotate(0deg) scale(1.02);
         }
@@ -356,7 +392,7 @@
             justify-content: center;
             padding: 8px;
         }
-        
+
         .reward-item .circle img {
             max-width: 100%;
             max-height: 100%;
@@ -381,7 +417,7 @@
             cursor: pointer;
             transition: transform 0.2s ease;
         }
-        
+
         .app-stores img:hover {
             transform: scale(1.05);
         }
@@ -403,21 +439,53 @@
             font-size: 2rem;
         }
 
-        .icon-1 { top: 15%; left: 10%; transform: rotate(-15deg); animation-delay: 0s; }
-        .icon-2 { top: 20%; right: 40%; transform: rotate(10deg); animation-delay: 2s; }
-        .icon-3 { bottom: 15%; left: 8%; transform: rotate(20deg); animation-delay: 1s; }
-        .icon-4 { bottom: 25%; right: 38%; transform: rotate(-10deg); animation-delay: 3s; }
+        .icon-1 {
+            top: 15%;
+            left: 10%;
+            transform: rotate(-15deg);
+            animation-delay: 0s;
+        }
+
+        .icon-2 {
+            top: 20%;
+            right: 40%;
+            transform: rotate(10deg);
+            animation-delay: 2s;
+        }
+
+        .icon-3 {
+            bottom: 15%;
+            left: 8%;
+            transform: rotate(20deg);
+            animation-delay: 1s;
+        }
+
+        .icon-4 {
+            bottom: 25%;
+            right: 38%;
+            transform: rotate(-10deg);
+            animation-delay: 3s;
+        }
 
         @keyframes float {
-            0% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(10deg); }
-            100% { transform: translateY(0) rotate(0deg); }
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(10deg);
+            }
+
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
         }
 
         /* Sliding Button */
         .slide-btn {
             position: fixed;
-            right: -170px; /* Hidden text initially */
+            right: -170px;
+            /* Hidden text initially */
             top: 25%;
             background-color: var(--brand-light);
             color: var(--brand-dark);
@@ -428,7 +496,7 @@
             gap: 15px;
             font-weight: 800;
             font-size: 1.1rem;
-            box-shadow: -5px 5px 25px rgba(0,0,0,0.1);
+            box-shadow: -5px 5px 25px rgba(0, 0, 0, 0.1);
             transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
             z-index: 9999;
@@ -440,7 +508,10 @@
         .slide-btn::before {
             content: '';
             position: absolute;
-            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
             background: linear-gradient(45deg, var(--brand-primary), var(--brand-cream));
             z-index: -1;
             border-radius: 32px 0 0 32px;
@@ -471,9 +542,17 @@
         }
 
         @keyframes ride {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-4px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-4px);
+            }
         }
+
         .slide-btn .icon-bg svg {
             animation: ride 0.5s ease-in-out infinite;
         }
@@ -546,7 +625,7 @@
             font-weight: 800;
             position: relative;
         }
-        
+
         .step-header::after {
             content: '';
             position: absolute;
@@ -565,7 +644,7 @@
             border-bottom: 1px solid #eee;
             padding-bottom: 20px;
         }
-        
+
         .step-item:last-child {
             border-bottom: none;
         }
@@ -622,7 +701,7 @@
             border-radius: 30px;
             font-weight: 800;
             font-size: 1.2rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             transition: transform 0.2s ease;
         }
 
@@ -673,7 +752,7 @@
             display: flex;
             gap: 15px;
         }
-        
+
         .social-icons svg {
             width: 24px;
             height: 24px;
@@ -681,7 +760,7 @@
             cursor: pointer;
             transition: transform 0.2s ease;
         }
-        
+
         .social-icons svg:hover {
             color: var(--brand-dark);
             transform: scale(1.1);
@@ -692,20 +771,26 @@
             .info-section {
                 flex-direction: column;
             }
-            .steps-section, .footer {
+
+            .steps-section,
+            .footer {
                 grid-template-columns: 1fr;
             }
+
             .hero {
                 flex-direction: column;
                 text-align: center;
                 gap: 50px;
             }
+
             .hero-content {
                 max-width: 100%;
             }
+
             .nav-links {
                 display: none;
             }
+
             .slide-btn {
                 top: auto;
                 bottom: 20px;
@@ -714,18 +799,23 @@
         }
     </style>
 </head>
+
 <body>
 
     <!-- Top Banner -->
     <div class="top-banner">
-        <p>{{ \App\Models\Setting::where('key', 'spesial_hari_ini')->value('value') ?? 'Spesial Hari Ini! Nikmati potongan harga hingga Rp 10.000. Pesan sekarang juga!' }}</p>
+        <p>{{ \App\Models\Setting::where('key', 'spesial_hari_ini')->value('value') ?? 'Spesial Hari Ini! Nikmati potongan harga hingga Rp 10.000. Pesan sekarang juga!' }}
+        </p>
         <button class="close-banner" onclick="this.parentElement.style.display='none'">&times;</button>
     </div>
 
     <!-- Header Navigation -->
     <header class="header">
         <div class="logo">
-            <a href="#" style="text-decoration: none;">
+            <a href="#" style="text-decoration: none; display: flex; align-items: center; gap: 10px;">
+                <img src="{{ \App\Models\Setting::where('key', 'site_logo')->value('value') ? asset('storage/' . \App\Models\Setting::where('key', 'site_logo')->value('value')) : asset('img/logo.png') }}"
+                    alt="Logo" style="height: 40px; width: 40px; border-radius: 50%; object-fit: cover;"
+                    onerror="this.style.display='none'">
                 <h2>{{ \App\Models\Setting::where('key', 'site_name')->value('value') ?? 'SwiftDine' }}</h2>
             </a>
         </div>
@@ -735,8 +825,7 @@
                     <a href="#">Menu</a>
                     <div class="dropdown-content">
                         <a href="{{ route('menu.show', 'minuman') }}">Minuman</a>
-                        <a href="{{ route('menu.show', 'camilan') }}">Camilan</a>
-                        <a href="{{ route('menu.show', 'makanan') }}">Makanan</a>
+
                         <a href="{{ route('menu.show', 'roti') }}">Roti</a>
                         <a href="{{ route('menu.show', 'sarapan-pagi') }}">Sarapan Pagi</a>
                     </div>
@@ -745,12 +834,16 @@
                 <a href="#" class="highlight">PESAN, LANGSUNG SIAPP!</a>
                 <a href="#">Berita Terkini</a>
             @else
-                <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'highlight' : '' }}">Dashboard</a>
-                
+                <a href="{{ route('dashboard') }}"
+                    class="{{ request()->routeIs('dashboard') ? 'highlight' : '' }}">Dashboard</a>
+
                 @if(Auth::user()->role === 'superadmin')
-                    <a href="{{ route('dashboard.menus') }}" class="{{ request()->routeIs('dashboard.menus*') ? 'highlight' : '' }}">Kelola Menu</a>
-                    <a href="{{ route('dashboard.users') }}" class="{{ request()->routeIs('dashboard.users*') ? 'highlight' : '' }}">Kelola User</a>
-                    <a href="{{ route('dashboard.settings') }}" class="{{ request()->routeIs('dashboard.settings*') ? 'highlight' : '' }}">Pengaturan</a>
+                    <a href="{{ route('dashboard.menus') }}"
+                        class="{{ request()->routeIs('dashboard.menus*') ? 'highlight' : '' }}">Kelola Menu</a>
+                    <a href="{{ route('dashboard.users') }}"
+                        class="{{ request()->routeIs('dashboard.users*') ? 'highlight' : '' }}">Kelola User</a>
+                    <a href="{{ route('dashboard.settings') }}"
+                        class="{{ request()->routeIs('dashboard.settings*') ? 'highlight' : '' }}">Pengaturan</a>
                 @elseif(Auth::user()->role === 'admin')
                     <a href="#">Kelola Menu</a>
                 @elseif(Auth::user()->role === 'waiter')
@@ -762,7 +855,7 @@
                         <a href="#">Kategori</a>
                         <div class="dropdown-content">
                             <a href="{{ route('menu.show', 'minuman') }}">Minuman</a>
-                            <a href="{{ route('menu.show', 'makanan') }}">Makanan</a>
+
                         </div>
                     </div>
                     <a href="#" class="highlight">Pesan Sekarang</a>
@@ -772,16 +865,20 @@
 
 
             @guest
-                <a href="{{ route('login') }}" class="btn-login-nav" style="background: var(--brand-primary); color: white; padding: 8px 20px; border-radius: 20px;">Login / Register</a>
+                <a href="{{ route('login') }}" class="btn-login-nav"
+                    style="background: var(--brand-primary); color: white; padding: 8px 20px; border-radius: 20px;">Login /
+                    Register</a>
             @else
                 <div class="dropdown">
-                    <a href="#" style="background: var(--brand-cream); padding: 8px 20px; border-radius: 20px; display: flex; align-items: center; gap: 5px;">
+                    <a href="#"
+                        style="background: var(--brand-cream); padding: 8px 20px; border-radius: 20px; display: flex; align-items: center; gap: 5px;">
                         👤 {{ Auth::user()->name }}
                     </a>
                     <div class="dropdown-content">
                         <form method="POST" action="{{ route('logout') }}" style="display: block;">
                             @csrf
-                            <button type="submit" style="background: none; border: none; padding: 10px 20px; width: 100%; text-align: center; cursor: pointer; color: var(--brand-dark); font-family: 'Outfit', sans-serif; font-size: 0.95rem;">Logout</button>
+                            <button type="submit"
+                                style="background: none; border: none; padding: 10px 20px; width: 100%; text-align: center; cursor: pointer; color: var(--brand-dark); font-family: 'Outfit', sans-serif; font-size: 0.95rem;">Logout</button>
                         </form>
                     </div>
                 </div>
@@ -792,12 +889,13 @@
     <!-- Sliding Button -->
     <a href="#" class="slide-btn">
         <div class="icon-bg">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="10" width="6" height="6" rx="1"/>
-                <path d="M8 12h5l3-4h4a1 1 0 0 1 1 1v6"/>
-                <circle cx="6" cy="18" r="2"/>
-                <circle cx="18" cy="18" r="2"/>
-                <path d="M12 12v6"/>
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="10" width="6" height="6" rx="1" />
+                <path d="M8 12h5l3-4h4a1 1 0 0 1 1 1v6" />
+                <circle cx="6" cy="18" r="2" />
+                <circle cx="18" cy="18" r="2" />
+                <path d="M12 12v6" />
             </svg>
         </div>
         <span>Pesan Sekarang</span>
@@ -821,16 +919,33 @@
         <div class="footer-col">
             <h4>Hubungi Kami</h4>
             <div class="social-icons">
-                <svg class="fb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
-                <svg class="fb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
-                <svg class="fb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-                <svg class="fb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
+                <svg class="fb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                </svg>
+                <svg class="fb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z">
+                    </path>
+                </svg>
+                <svg class="fb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                <svg class="fb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z">
+                    </path>
+                    <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+                </svg>
             </div>
         </div>
     </footer>
 
 </body>
+
 </html>
-
-
-

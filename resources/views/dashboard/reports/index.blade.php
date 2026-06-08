@@ -29,6 +29,13 @@
         <p style="margin: 5px 0 0; color: #666;">Dicetak pada: {{ date('d M Y H:i') }}</p>
     </div>
 
+    <div style="display: flex; justify-content: flex-end; margin-bottom: 15px;" class="hide-on-print">
+        <div style="position: relative; width: 300px;">
+            <input type="text" id="searchInput" placeholder="Cari nama pelanggan atau pesanan..." style="width: 100%; padding: 10px 15px 10px 40px; border: 2px solid #f0e6d2; border-radius: 8px; font-size: 0.95rem; outline: none; transition: border-color 0.2s;">
+            <svg style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #999;" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </div>
+    </div>
+
     <table id="transactionTable" style="width: 100%; border-collapse: collapse; text-align: left;">
         <thead>
             <tr style="border-bottom: 2px solid #f0e6d2;">
@@ -108,6 +115,22 @@
             if (printHeader) printHeader.style.display = 'none';
         });
     }
+
+    // Fungsi pencarian
+    document.getElementById('searchInput')?.addEventListener('keyup', function() {
+        let filter = this.value.toLowerCase();
+        let rows = document.querySelectorAll('#transactionTable tbody tr');
+        
+        rows.forEach(row => {
+            let name = row.children[2].textContent.toLowerCase();
+            let items = row.children[3].textContent.toLowerCase();
+            if (name.includes(filter) || items.includes(filter)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
 </script>
 
 <style>

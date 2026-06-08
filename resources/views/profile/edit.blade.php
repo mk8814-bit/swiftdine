@@ -20,15 +20,16 @@
         <div style="margin-bottom: 25px; display: flex; flex-direction: column; align-items: center;">
             <div style="width: 120px; height: 120px; background-color: var(--brand-primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 800; margin-bottom: 15px; overflow: hidden; border: 4px solid #f0e6d2;">
                 @if(Auth::user()->profile_picture)
-                    <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="Profile" style="width: 100%; height: 100%; object-fit: cover;">
+                    <img id="profilePreview" src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="Profile" style="width: 100%; height: 100%; object-fit: cover;">
                 @else
-                    {{ substr(Auth::user()->name, 0, 1) }}
+                    <img id="profilePreview" src="" alt="Profile" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                    <span id="profilePlaceholder">{{ substr(Auth::user()->name, 0, 1) }}</span>
                 @endif
             </div>
             
             <label style="cursor: pointer; background: var(--brand-cream); padding: 8px 15px; border-radius: 8px; font-weight: 600; color: var(--brand-dark); border: 1px solid #e0d5c1; transition: background 0.2s;">
                 Pilih Foto Profil Baru
-                <input type="file" name="profile_picture" style="display: none;" accept="image/*" onchange="document.getElementById('file-name').textContent = this.files[0].name">
+                <input type="file" name="profile_picture" style="display: none;" accept="image/*" onchange="initCropper(this, 'profilePreview')">
             </label>
             <div id="file-name" style="margin-top: 10px; font-size: 0.9rem; color: #666;"></div>
             @error('profile_picture')

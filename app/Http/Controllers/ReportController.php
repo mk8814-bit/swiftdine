@@ -10,7 +10,7 @@ class ReportController extends Controller
     {
         // Dummy data for transactions since there's no actual transaction table yet.
         $dummyTransactions = [
-            (object)[
+            (object) [
                 'id' => 'TRX-1001',
                 'date' => date('Y-m-d', strtotime('-1 days')),
                 'customer_name' => 'Budi Santoso',
@@ -18,7 +18,7 @@ class ReportController extends Controller
                 'total' => 85000,
                 'status' => 'Selesai'
             ],
-            (object)[
+            (object) [
                 'id' => 'TRX-1002',
                 'date' => date('Y-m-d', strtotime('-1 days')),
                 'customer_name' => 'Siti Aminah',
@@ -26,7 +26,7 @@ class ReportController extends Controller
                 'total' => 45000,
                 'status' => 'Selesai'
             ],
-            (object)[
+            (object) [
                 'id' => 'TRX-1003',
                 'date' => date('Y-m-d'),
                 'customer_name' => 'Agus Pratama',
@@ -34,7 +34,7 @@ class ReportController extends Controller
                 'total' => 55000,
                 'status' => 'Selesai'
             ],
-            (object)[
+            (object) [
                 'id' => 'TRX-1004',
                 'date' => date('Y-m-d'),
                 'customer_name' => 'Dinda Putri',
@@ -42,7 +42,7 @@ class ReportController extends Controller
                 'total' => 40000,
                 'status' => 'Diproses'
             ],
-            (object)[
+            (object) [
                 'id' => 'TRX-1005',
                 'date' => date('Y-m-d'),
                 'customer_name' => 'Reza Pahlevi',
@@ -53,5 +53,24 @@ class ReportController extends Controller
         ];
 
         return view('dashboard.reports.index', compact('dummyTransactions'));
+    }
+
+    public function finance()
+    {
+        // Dummy finance data
+        $revenue = 15000000;
+        $expenses = 8500000;
+        $profit = $revenue - $expenses;
+
+        return view('dashboard.owner.reports.finance', compact('revenue', 'expenses', 'profit'));
+    }
+
+    public function monthly()
+    {
+        // Dummy monthly data
+        $months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'];
+        $salesData = [12000000, 13500000, 11000000, 14200000, 15000000, 16800000];
+
+        return view('dashboard.owner.reports.monthly', compact('months', 'salesData'));
     }
 }

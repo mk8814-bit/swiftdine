@@ -7,8 +7,20 @@
 </div>
 
 <div style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); max-width: 800px;">
-    <form action="{{ route('dashboard.settings.update') }}" method="POST">
+    <form action="{{ route('dashboard.settings.update') }}" method="POST" enctype="multipart/form-data">
         @csrf
+        
+        <div style="margin-bottom: 25px; display: flex; align-items: center; gap: 20px;">
+            <div style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid #f0e6d2; overflow: hidden; background: #f9f6f0; display: flex; align-items: center; justify-content: center;">
+                <img id="logoPreview" src="{{ isset($settings['site_logo']) ? asset('storage/' . $settings['site_logo']->value) : asset('img/logo.png') }}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; document.getElementById('logoPlaceholder').style.display='block';">
+                <span id="logoPlaceholder" style="color: #aaa; font-size: 0.8rem; display: none;">Logo</span>
+            </div>
+            <div>
+                <label style="display: block; font-weight: 700; margin-bottom: 8px; color: var(--brand-dark);">Logo Situs</label>
+                <input type="file" name="logo" accept="image/*" onchange="initCropper(this, 'logoPreview')" style="font-size: 0.9rem; padding: 5px;">
+                <div style="font-size: 0.8rem; color: #888; margin-top: 5px;">Format: JPG, PNG.</div>
+            </div>
+        </div>
         
         <div style="margin-bottom: 20px;">
             <label style="display: block; font-weight: 700; margin-bottom: 8px; color: var(--brand-dark);">Nama Situs / Restoran</label>
@@ -35,4 +47,17 @@
         </button>
     </form>
 </div>
+
+<script>
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function(){
+            var output = document.getElementById('logoPreview');
+            output.src = reader.result;
+            output.style.display = 'block';
+            document.getElementById('logoPlaceholder').style.display = 'none';
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
 @endsection
