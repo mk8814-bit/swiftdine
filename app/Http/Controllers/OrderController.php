@@ -7,6 +7,10 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Menu;
 use Illuminate\Support\Facades\Auth;
+use Midtrans\Config;
+use Midtrans\Snap;
+
+require_once base_path('vendor/midtrans/midtrans-php/Midtrans.php');
 
 class OrderController extends Controller
 {
@@ -33,9 +37,9 @@ class OrderController extends Controller
         } else {
             OrderItem::create([
                 'order_id' => $order->id,
-                'menu_id'  => $menu->id,
+                'menu_id' => $menu->id,
                 'quantity' => 1,
-                'price'    => $menu->price,
+                'price' => $menu->price,
             ]);
         }
 
@@ -46,10 +50,11 @@ class OrderController extends Controller
 
     public function updateCart(Request $request, OrderItem $item)
     {
-        if ($item->order->user_id !== Auth::id()) abort(403);
+        if ($item->order->user_id !== Auth::id())
+            abort(403);
 
         $request->validate(['quantity' => 'required|integer|min:1']);
-        
+
         $item->update(['quantity' => $request->quantity]);
         $this->updateOrderTotal($item->order);
 
@@ -58,8 +63,9 @@ class OrderController extends Controller
 
     public function removeFromCart(OrderItem $item)
     {
-        if ($item->order->user_id !== Auth::id()) abort(403);
-        
+        if ($item->order->user_id !== Auth::id())
+            abort(403);
+
         $order = $item->order;
         $item->delete();
         $this->updateOrderTotal($order);
@@ -74,43 +80,74 @@ class OrderController extends Controller
             return response()->json(['error' => 'Keranjang belanja kosong.'], 400);
         }
 
+        $request->validate([
+            'table_number' => 'nullable|string',
+            'notes' => 'nullable|string',
+        ]);
+
+        $order->update([
+            'table_number' => ($request->table_number ?: $order->table_number) ?: 'Tanpa Meja',
+            'notes' => $request->notes,
+        ]);
+
         // Set Midtrans Configuration
-        \Midtrans\Config::$serverKey = env('MIDTRANS_SERVER_KEY');
-        \Midtrans\Config::$isProduction = env('MIDTRANS_IS_PRODUCTION', false);
-        \Midtrans\Config::$isSanitized = env('MIDTRANS_IS_SANITIZED', true);
-        \Midtrans\Config::$is3ds = env('MIDTRANS_IS_3DS', true);
+        Config::$serverKey = config('services.midtrans.server_key');
+        Config::$isProduction = config('services.midtrans.is_production');
+        Config::$isSanitized = config('services.midtrans.is_sanitized');
+        Config::$is3ds = config('services.midtrans.is_3ds');
 
-        if (!$order->snap_token) {
-            $params = [
-                'transaction_details' => [
-                    'order_id' => 'ORD-' . $order->id . '-' . time(),
-                    'gross_amount' => $order->total_price,
-                ],
-                'customer_details' => [
-                    'first_name' => Auth::user()->name,
-                    'email' => Auth::user()->email,
-                ],
-            ];
+        // Always generate a new snap token if checking out again to avoid order_id conflicts or stale data
+        $params = [
+            'transaction_details' => [
+                'order_id' => 'ORD-' . $order->id . '-' . time(),
+                'gross_amount' => (int) $order->total_price,
+            ],
+            'customer_details' => [
+                'first_name' => Auth::user()->name,
+                'email' => Auth::user()->email,
+            ],
+            'item_details' => $order->orderItems->map(function ($item) {
+                return [
+                    'id' => $item->menu_id,
+                    'price' => $item->price,
+                    'quantity' => $item->quantity,
+                    'name' => $item->menu->name,
+                ];
+            })->toArray(),
+            'enabled_payments' => ['qris', 'bank_transfer'],
+        ];
 
-            try {
-                $snapToken = \Midtrans\Snap::getSnapToken($params);
-                $order->snap_token = $snapToken;
-                $order->save();
-            } catch (\Exception $e) {
-                return response()->json(['error' => $e->getMessage()], 500);
+        try {
+            $snapToken = Snap::getSnapToken($params);
+            $order->update(['snap_token' => $snapToken]);
+            return response()->json(['snap_token' => $snapToken]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function callback(Request $request)
+    {
+        $serverKey = config('services.midtrans.server_key');
+        $hashed = hash("sha512", $request->order_id . $request->status_code . $request->gross_amount . $serverKey);
+
+        if ($hashed == $request->signature_key) {
+            if ($request->transaction_status == 'capture' || $request->transaction_status == 'settlement') {
+                // Extract order ID: ORD-{id}-{timestamp}
+                $parts = explode('-', $request->order_id);
+                $orderId = $parts[1];
+                $order = Order::find($orderId);
+                if ($order) {
+                    $order->update(['status' => 'paid']);
+                }
             }
         }
 
-        return response()->json(['snap_token' => $order->snap_token]);
+        return response()->json(['status' => 'success']);
     }
 
     public function success()
     {
-        $order = Order::where('user_id', Auth::id())->where('status', 'pending')->first();
-        if ($order) {
-            $order->update(['status' => 'paid']);
-        }
-        
         return view('dashboard.pelanggan.thankyou');
     }
 
@@ -120,15 +157,13 @@ class OrderController extends Controller
             ->whereIn('status', ['paid', 'completed', 'cancelled'])
             ->orderBy('updated_at', 'desc')
             ->get();
-            
+
         return view('dashboard.pelanggan.history', compact('orders'));
     }
 
     private function updateOrderTotal(Order $order)
     {
-        $total = $order->orderItems->sum(function($item) {
-            return $item->quantity * $item->price;
-        });
+        $total = $order->orderItems()->selectRaw('SUM(quantity * price) as total')->value('total') ?? 0;
         $order->update(['total_price' => $total]);
     }
 }

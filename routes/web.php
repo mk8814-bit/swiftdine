@@ -23,6 +23,9 @@ Route::get('/register', [AuthController::class, 'showRegister'])->name('register
 Route::post('/register', [AuthController::class, 'registerProcess'])->middleware('guest');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
+// Midtrans Callback
+Route::post('/midtrans/callback', [\App\Http\Controllers\OrderController::class, 'callback']);
+
 // Dashboard (all authenticated users)
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -70,9 +73,16 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/barcode', [DashboardController::class, 'barcode'])->name('barcode');
     });
 
+    // Admin, Superadmin, Staf Gudang Features
+    Route::middleware(['role:superadmin,admin,staf_gudang'])->name('dashboard.')->group(function () {
+        Route::resource('barang', \App\Http\Controllers\BarangController::class);
+    });
+
     // Kasir only
     Route::middleware(['role:kasir'])->prefix('kasir')->name('dashboard.kasir.')->group(function () {
         Route::get('/scan', [\App\Http\Controllers\KasirController::class, 'scan'])->name('scan');
+        Route::post('/scan', [\App\Http\Controllers\KasirController::class, 'processScan'])->name('scan.process');
+        Route::post('/scan/clear', [\App\Http\Controllers\KasirController::class, 'clearScan'])->name('scan.clear');
     });
 
     // Waiter only
@@ -96,5 +106,22 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/cart/success', [\App\Http\Controllers\OrderController::class, 'success'])->name('cart.success');
 
         Route::get('/orders/history', [\App\Http\Controllers\OrderController::class, 'history'])->name('history');
+    });
+
+    // Barista only
+    Route::middleware(['role:barista'])->prefix('barista')->name('dashboard.barista.')->group(function () {
+        Route::get('/history', [DashboardController::class, 'baristaHistory'])->name('history');
+        Route::post('/order/item/{item}/complete', [DashboardController::class, 'baristaCompleteItem'])->name('order.item.complete');
+    });
+
+    // Attendance Features
+    Route::middleware(['role:admin,waiter,kasir,barista,koki,baker,staf_gudang'])->name('dashboard.')->group(function () {
+        Route::get('/attendance', [\App\Http\Controllers\AttendanceController::class, 'index'])->name('attendance.index');
+        Route::post('/attendance/clock-in', [\App\Http\Controllers\AttendanceController::class, 'clockIn'])->name('attendance.clock-in');
+        Route::post('/attendance/clock-out', [\App\Http\Controllers\AttendanceController::class, 'clockOut'])->name('attendance.clock-out');
+    });
+
+    Route::middleware(['role:superadmin,admin,owner'])->name('dashboard.')->group(function () {
+        Route::get('/attendance/report', [\App\Http\Controllers\AttendanceController::class, 'report'])->name('attendance.report');
     });
 });

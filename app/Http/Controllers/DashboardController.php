@@ -7,12 +7,24 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Menu;
 use App\Models\Setting;
+use App\Models\Order;
+use App\Models\OrderItem;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
+
+        // Capture table number from URL if present and user is a customer
+        if ($request->has('table') && $user->role === 'pelanggan') {
+            $order = Order::firstOrCreate(
+                ['user_id' => $user->id, 'status' => 'pending'],
+                ['total_price' => 0]
+            );
+            $order->update(['table_number' => $request->get('table')]);
+        }
 
         switch ($user->role) {
             case 'superadmin':
@@ -28,7 +40,7 @@ class DashboardController extends Controller
             case 'koki':
                 return $this->kitchenDashboard('koki');
             case 'barista':
-                return $this->kitchenDashboard('barista');
+                return $this->baristaDashboard();
             case 'staf_gudang':
                 return $this->warehouseDashboard();
             default:
@@ -46,6 +58,72 @@ class DashboardController extends Controller
         ];
 
         return view('dashboard.warehouse', compact('lowStockItems'));
+    }
+
+    private function baristaDashboard()
+    {
+        $today = Carbon::today();
+
+        // 1. Ringkasan pesanan minuman hari ini
+        $todayDrinkOrders = OrderItem::whereHas('menu', function ($q) {
+            $q->where('category', 'minuman');
+        })->whereDate('created_at', $today)->count();
+
+        // 2. Statistik penjualan minuman (total revenue from drinks today)
+        $todayDrinkSales = OrderItem::whereHas('menu', function ($q) {
+            $q->where('category', 'minuman');
+        })->whereDate('created_at', $today)
+            ->get()
+            ->sum(function ($item) {
+                return $item->quantity * $item->price;
+            });
+
+        // 3. Jumlah pesanan menunggu (pending minuman items in paid orders)
+        $pendingItems = OrderItem::whereHas('menu', function ($q) {
+            $q->where('category', 'minuman');
+        })->where('status', 'pending')
+            ->whereHas('order', function ($q) {
+                $q->where('status', 'paid');
+            })->with(['order', 'menu'])->get();
+
+        $countPending = $pendingItems->count();
+
+        // 4. Jumlah pesanan selesai (completed minuman items today)
+        $countCompletedToday = OrderItem::whereHas('menu', function ($q) {
+            $q->where('category', 'minuman');
+        })->where('status', 'completed')
+            ->whereDate('updated_at', $today)
+            ->count();
+
+        return view('dashboard.barista.index', compact(
+            'todayDrinkOrders',
+            'todayDrinkSales',
+            'countPending',
+            'countCompletedToday',
+            'pendingItems'
+        ));
+    }
+
+    public function baristaHistory()
+    {
+        $historyItems = OrderItem::whereHas('menu', function ($q) {
+            $q->where('category', 'minuman');
+        })->where('status', 'completed')
+            ->with(['order', 'menu'])
+            ->orderBy('updated_at', 'desc')
+            ->paginate(15);
+
+        return view('dashboard.barista.history', compact('historyItems'));
+    }
+
+    public function baristaCompleteItem(OrderItem $item)
+    {
+        $item->update(['status' => 'completed']);
+        return redirect()->back()->with('success', [
+            'message' => 'Pesanan telah selesai!',
+            'menu' => $item->menu->name,
+            'table' => $item->order->table_number
+        ]);
     }
 
     private function kitchenDashboard($role)
@@ -261,9 +339,22 @@ class DashboardController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'role' => 'required|in:superadmin,admin,waiter,kasir,pelanggan,barista,koki,staf_gudang,owner',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $user->update($request->only(['name', 'email', 'role']));
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->role = $request->role;
+
+        if ($request->hasFile('profile_picture')) {
+            if ($user->profile_picture && \Illuminate\Support\Facades\Storage::disk('public')->exists($user->profile_picture)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($user->profile_picture);
+            }
+            $path = $request->file('profile_picture')->store('profiles', 'public');
+            $user->profile_picture = $path;
+        }
+
+        $user->save();
 
         return redirect()->route('dashboard.users')->with('success', 'Akun pengguna berhasil diperbarui!');
     }
@@ -273,6 +364,7 @@ class DashboardController extends Controller
     public function barcode()
     {
         $baseUrl = config('app.url');
-        return view('dashboard.superadmin.barcode', compact('baseUrl'));
+        $mejas = \App\Models\Meja::orderBy('number')->get();
+        return view('dashboard.superadmin.barcode', compact('baseUrl', 'mejas'));
     }
 }

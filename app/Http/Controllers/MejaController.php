@@ -29,7 +29,7 @@ class MejaController extends Controller
 
         Meja::create($request->all());
 
-        return redirect()->route('dashboard.meja.index')->with('success', 'Meja berhasil ditambahkan!');
+        return redirect()->route('dashboard.barcode')->with('success', 'Meja berhasil ditambahkan!');
     }
 
     public function edit(Meja $meja)
@@ -48,13 +48,13 @@ class MejaController extends Controller
 
         $meja->update($request->all());
 
-        return redirect()->route('dashboard.meja.index')->with('success', 'Meja berhasil diperbarui!');
+        return redirect()->route('dashboard.barcode')->with('success', 'Meja berhasil diperbarui!');
     }
 
     public function destroy(Meja $meja)
     {
         $meja->delete();
 
-        return redirect()->route('dashboard.meja.index')->with('success', 'Meja berhasil dihapus!');
+        return redirect()->route('dashboard.barcode')->with('success', 'Meja berhasil dihapus!');
     }
 }

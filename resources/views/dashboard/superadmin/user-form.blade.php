@@ -10,9 +10,35 @@
 
     <div
         style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); max-width: 800px;">
-        <form action="{{ route('dashboard.users.update', $user->id) }}" method="POST">
+        <form action="{{ route('dashboard.users.update', $user->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
+            <div style="margin-bottom: 25px; display: flex; flex-direction: column; align-items: flex-start;">
+                <label style="display: block; font-weight: 700; margin-bottom: 12px; color: var(--brand-dark);">Foto
+                    Profil</label>
+                <div style="display: flex; align-items: center; gap: 20px;">
+                    <div
+                        style="width: 80px; height: 80px; border-radius: 50%; background: var(--brand-cream); border: 2px solid #f0e6d2; display: flex; align-items: center; justify-content: center; overflow: hidden; font-weight: 800; color: var(--brand-primary); font-size: 1.5rem;">
+                        @if($user->profile_picture)
+                            <img id="userPreview" src="{{ asset('storage/' . $user->profile_picture) }}" alt="Profile"
+                                style="width: 100%; height: 100%; object-fit: cover;">
+                        @else
+                            <img id="userPreview" src="" alt="Profile"
+                                style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                            <span id="userPlaceholder">{{ substr($user->name, 0, 1) }}</span>
+                        @endif
+                    </div>
+                    <label
+                        style="cursor: pointer; background: var(--brand-cream); padding: 10px 20px; border-radius: 10px; font-weight: 700; border: 2px solid #f0e6d2; color: var(--brand-dark);">
+                        Upload Foto
+                        <input type="file" name="profile_picture" style="display: none;" accept="image/*"
+                            onchange="initCropper(this, 'userPreview')">
+                    </label>
+                </div>
+                @error('profile_picture') <span
+                    style="color: red; font-size: 0.85rem; margin-top: 5px;">{{ $message }}</span>
+                @enderror
+            </div>
 
             <div style="margin-bottom: 20px;">
                 <label style="display: block; font-weight: 700; margin-bottom: 8px; color: var(--brand-dark);">Nama Lengkap
@@ -40,7 +66,8 @@
                     @php $roles = ['superadmin', 'admin', 'waiter', 'kasir', 'barista', 'koki', 'staf_gudang', 'owner', 'pelanggan']; @endphp
                     @foreach($roles as $role)
                         <option value="{{ $role }}" {{ old('role', $user->role) == $role ? 'selected' : '' }}>
-                            {{ ucwords(str_replace('_', ' ', $role)) }}</option>
+                            {{ ucwords(str_replace('_', ' ', $role)) }}
+                        </option>
                     @endforeach
                 </select>
                 @error('role') <span style="color: red; font-size: 0.85rem;">{{ $message }}</span> @enderror

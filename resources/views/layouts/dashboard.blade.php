@@ -392,16 +392,7 @@
                     </svg>
                     Kelola Menu
                 </a>
-                <a href="{{ route('dashboard.meja.index') }}"
-                    class="{{ request()->routeIs('dashboard.meja*') ? 'active' : '' }}">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                        <line x1="16" y1="2" x2="16" y2="6"></line>
-                        <line x1="8" y1="2" x2="8" y2="6"></line>
-                        <line x1="3" y1="10" x2="21" y2="10"></line>
-                    </svg>
-                    Ketersediaan Meja
-                </a>
+
                 <a href="{{ route('dashboard.packages.index') }}"
                     class="{{ request()->routeIs('dashboard.packages*') ? 'active' : '' }}">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -435,12 +426,21 @@
                     Laporan Transaksi
                 </a>
                 <a href="{{ route('dashboard.barcode') }}"
-                    class="{{ request()->routeIs('dashboard.barcode*') ? 'active' : '' }}">
+                    class="{{ request()->routeIs('dashboard.barcode*') || request()->routeIs('dashboard.meja*') ? 'active' : '' }}">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                         <line x1="9" y1="3" x2="9" y2="21"></line>
                     </svg>
-                    Cetak Barcode / Scan Meja
+                    Scan Meja
+                </a>
+                <a href="{{ route('dashboard.attendance.report') }}"
+                    class="{{ request()->routeIs('dashboard.attendance.report') ? 'active' : '' }}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                        <path d="M9 14l2 2 4-4"></path>
+                    </svg>
+                    Laporan Presensi
                 </a>
 
                 <div class="menu-title" style="margin-top: 15px;">Operasional & Keuangan</div>
@@ -491,16 +491,7 @@
                     </svg>
                     Kelola Menu
                 </a>
-                <a href="{{ route('dashboard.meja.index') }}"
-                    class="{{ request()->routeIs('dashboard.meja*') ? 'active' : '' }}">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                        <line x1="16" y1="2" x2="16" y2="6"></line>
-                        <line x1="8" y1="2" x2="8" y2="6"></line>
-                        <line x1="3" y1="10" x2="21" y2="10"></line>
-                    </svg>
-                    Ketersediaan Meja
-                </a>
+
                 <a href="{{ route('dashboard.packages.index') }}"
                     class="{{ request()->routeIs('dashboard.packages*') ? 'active' : '' }}">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -534,12 +525,30 @@
                     Laporan Transaksi
                 </a>
                 <a href="{{ route('dashboard.barcode') }}"
-                    class="{{ request()->routeIs('dashboard.barcode*') ? 'active' : '' }}">
+                    class="{{ request()->routeIs('dashboard.barcode*') || request()->routeIs('dashboard.meja*') ? 'active' : '' }}">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                         <line x1="9" y1="3" x2="9" y2="21"></line>
                     </svg>
-                    Cetak Barcode / Scan Meja
+                    Scan Meja
+                </a>
+                <a href="{{ route('dashboard.barang.index') }}"
+                    class="{{ request()->routeIs('dashboard.barang*') ? 'active' : '' }}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                        </path>
+                    </svg>
+                    Menu Barang
+                </a>
+                <a href="{{ route('dashboard.attendance.report') }}"
+                    class="{{ request()->routeIs('dashboard.attendance.report') ? 'active' : '' }}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                        <path d="M9 14l2 2 4-4"></path>
+                    </svg>
+                    Laporan Presensi
                 </a>
             @elseif(Auth::user()->role === 'waiter')
                 <div class="menu-title" style="margin-top: 15px;">Tugas</div>
@@ -610,9 +619,18 @@
                     </svg>
                     Laporan Bulanan
                 </a>
-            @elseif(in_array(Auth::user()->role, ['koki', 'barista']))
+                <a href="{{ route('dashboard.attendance.report') }}"
+                    class="{{ request()->routeIs('dashboard.attendance.report') ? 'active' : '' }}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                        <path d="M9 14l2 2 4-4"></path>
+                    </svg>
+                    Laporan Presensi
+                </a>
+            @elseif(in_array(Auth::user()->role, ['koki', 'barista', 'baker']))
                 <div class="menu-title" style="margin-top: 15px;">Dapur & Bar</div>
-                <a href="{{ route('dashboard') }}" class="active">
+                <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                         <polyline points="14 2 14 8 20 8"></polyline>
@@ -622,6 +640,16 @@
                     </svg>
                     Daftar Pesanan Baru
                 </a>
+                @if(Auth::user()->role === 'barista')
+                    <a href="{{ route('dashboard.barista.history') }}"
+                        class="{{ request()->routeIs('dashboard.barista.history') ? 'active' : '' }}">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 8v4l3 3"></path>
+                            <circle cx="12" cy="12" r="9"></circle>
+                        </svg>
+                        Riwayat Pesanan
+                    </a>
+                @endif
             @elseif(Auth::user()->role === 'staf_gudang')
                 <div class="menu-title" style="margin-top: 15px;">Gudang & Stok</div>
                 <a href="{{ route('dashboard') }}"
@@ -650,6 +678,15 @@
                     </svg>
                     Barang Keluar
                 </a>
+                <a href="{{ route('dashboard.barang.index') }}"
+                    class="{{ request()->routeIs('dashboard.barang*') ? 'active' : '' }}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                        </path>
+                    </svg>
+                    Menu Barang
+                </a>
             @elseif(Auth::user()->role === 'pelanggan')
                 <div class="menu-title" style="margin-top: 15px;">Pemesanan</div>
                 <a href="{{ route('dashboard.pelanggan.cart') }}"
@@ -671,6 +708,17 @@
                         <polyline points="10 9 9 9 8 9"></polyline>
                     </svg>
                     Riwayat Pesanan
+                </a>
+            @endif
+
+            @if(in_array(Auth::user()->role, ['admin', 'waiter', 'kasir', 'barista', 'koki', 'baker', 'staf_gudang']))
+                <div class="menu-title" style="margin-top: 15px;">Kepegawaian</div>
+                <a href="{{ route('dashboard.attendance.index') }}"
+                    class="{{ request()->routeIs('dashboard.attendance.*') ? 'active' : '' }}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                    Presensi Wajah
                 </a>
             @endif
         </div>

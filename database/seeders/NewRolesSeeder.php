@@ -17,7 +17,8 @@ class NewRolesSeeder extends Seeder
             'barista' => 'Barista',
             'koki' => 'Koki',
             'staf_gudang' => 'Staf Gudang',
-            'owner' => 'Owner'
+            'owner' => 'Owner',
+            'baker' => 'Baker'
         ];
 
         foreach ($roles as $roleKey => $roleName) {
